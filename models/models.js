@@ -51,10 +51,23 @@ const TypeBrand = sequelize.define('type_brand', {
 });
 
 const Review = sequelize.define('review', {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }, // Added id field
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     text: { type: DataTypes.TEXT, allowNull: false },
     author: { type: DataTypes.STRING, allowNull: false },
     time: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+});
+
+const Order = sequelize.define('order', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    total: { type: DataTypes.FLOAT, allowNull: false },
+    status: { type: DataTypes.STRING, defaultValue: 'Pending' },
+    userId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    }
 });
 
 // Associations
@@ -63,6 +76,9 @@ Basket.belongsTo(User);
 
 User.hasMany(Rating);
 Rating.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 Basket.hasMany(BasketDevice);
 BasketDevice.belongsTo(Basket);
@@ -99,4 +115,5 @@ module.exports = {
     TypeBrand,
     DeviceInfo,
     Review,
+    Order,
 };
