@@ -14,6 +14,6 @@ router.use('/brand', brandRouter);
 router.use('/device', deviceRouter);
 router.use('/review', reviewRouter);
 router.use('/order', orderRouter); // Использование роутера для заказов
-app.use('/api/basket', basketRouter);
+router.use('/api/basket', basketRouter);
 
 module.exports = router;
