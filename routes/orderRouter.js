@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = new Router();
-const { Order, User, Device } = require('../models/models');
+const { Order, User, Device } = require('../models');
 
 // Создание новой заявки
 router.post('/', async (req, res) => {
