@@ -65,13 +65,6 @@ const Review = sequelize.define('review', {
     }
   });
 
-const Order = sequelize.define('order', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    userId: {type: DataTypes.INTEGER, allowNull: false},
-    deviceId: {type: DataTypes.INTEGER, allowNull: false},
-    quantity: {type: DataTypes.INTEGER, allowNull: false},
-    status: {type: DataTypes.STRING, allowNull: false, defaultValue: "Pending"},
-    orderDate: {type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW}
 })
 
 // Associations
@@ -102,11 +95,6 @@ DeviceInfo.belongsTo(Device)
 Type.belongsToMany(Brand, {through: TypeBrand })
 Brand.belongsToMany(Type, {through: TypeBrand })
 
-User.hasMany(Order)
-Order.belongsTo(User)
-
-Device.hasMany(Order)
-Order.belongsTo(Device)
 
 module.exports = {
     User,
@@ -119,5 +107,4 @@ module.exports = {
     TypeBrand,
     DeviceInfo,
     Review,
-    Order
 }
