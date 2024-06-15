@@ -65,7 +65,7 @@ const Review = sequelize.define('review', {
     }
   });
 
-})
+)
 
 // Associations
 User.hasOne(Basket)
