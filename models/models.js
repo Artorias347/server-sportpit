@@ -22,6 +22,7 @@ const Device = sequelize.define('device', {
     price: {type: DataTypes.INTEGER, allowNull: false},
     rating: {type: DataTypes.INTEGER, defaultValue: 0},
     img: {type: DataTypes.STRING, allowNull: false},
+    stock: {type: DataTypes.INTEGER, defaultValue: 0}, // Добавлено поле для количества на складе
 })
 
 const Type = sequelize.define('type', {
@@ -64,7 +65,16 @@ const Review = sequelize.define('review', {
     }
   });
 
+const Order = sequelize.define('order', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    userId: {type: DataTypes.INTEGER, allowNull: false},
+    deviceId: {type: DataTypes.INTEGER, allowNull: false},
+    quantity: {type: DataTypes.INTEGER, allowNull: false},
+    status: {type: DataTypes.STRING, allowNull: false, defaultValue: "Pending"},
+    orderDate: {type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW}
+})
 
+// Associations
 User.hasOne(Basket)
 Basket.belongsTo(User)
 
@@ -92,6 +102,12 @@ DeviceInfo.belongsTo(Device)
 Type.belongsToMany(Brand, {through: TypeBrand })
 Brand.belongsToMany(Type, {through: TypeBrand })
 
+User.hasMany(Order)
+Order.belongsTo(User)
+
+Device.hasMany(Order)
+Order.belongsTo(Device)
+
 module.exports = {
     User,
     Basket,
@@ -102,10 +118,6 @@ module.exports = {
     Rating,
     TypeBrand,
     DeviceInfo,
-    Review
+    Review,
+    Order
 }
-
-
-
-
-
