@@ -1,8 +1,8 @@
 const Router = require('express')
 const router = new Router()
-const { Order } = require('../models')
-const { User } = require('../models')
-const { Device } = require('../models')
+const { Order } = require('../models/models')
+const { User } = require('../models/models')
+const { Device } = require('../models/models')
 
 // Создание новой заявки
 router.post('/', async (req, res) => {
