@@ -1,25 +1,25 @@
-const { Order, Product } = require('../models/models');
+const { Order, Product } = require('../models');
 
 class OrderController {
     async createOrder(req, res) {
-        const { cart } = req.body;
+        const { name, address, email, cart } = req.body;
         const userId = req.user.id;
 
         try {
             // Создание заказа в базе данных
-            const order = await Order.create({ userId });
+            const order = await Order.create({ userId, name, address, email });
 
             // Обработка товаров в корзине и учет их в заказе
             for (const item of cart) {
                 const product = await Product.findByPk(item.id);
 
                 if (!product) {
-                    return res.status(404).json({ message: `Product with id ${item.id} not found` });
+                    return res.status(404).json({ message: `Товар с id ${item.id} не найден` });
                 }
 
                 // Проверка наличия достаточного количества товара на складе
                 if (product.quantity < item.quantity) {
-                    return res.status(400).json({ message: `Not enough quantity available for product ${product.name}` });
+                    return res.status(400).json({ message: `Недостаточное количество товара ${product.name}` });
                 }
 
                 // Уменьшение количества товара на складе
@@ -33,21 +33,8 @@ class OrderController {
             // Успешный ответ с созданным заказом
             return res.status(201).json(order);
         } catch (error) {
-            console.error('Failed to create order:', error);
-            return res.status(500).json({ message: 'Failed to create order', error });
-        }
-    }
-
-    async getOrders(req, res) {
-        const userId = req.user.id;
-
-        try {
-            // Получение всех заказов пользователя
-            const orders = await Order.findAll({ where: { userId } });
-            return res.json(orders);
-        } catch (error) {
-            console.error('Failed to retrieve orders:', error);
-            return res.status(500).json({ message: 'Failed to retrieve orders', error });
+            console.error('Не удалось создать заказ:', error);
+            return res.status(500).json({ message: 'Не удалось создать заказ', error });
         }
     }
 }
