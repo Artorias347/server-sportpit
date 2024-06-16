@@ -6,7 +6,7 @@ const brandRouter = require('./brandRouter');
 const typeRouter = require('./typeRouter');
 const reviewRouter = require('./reviewRouter');
 const orderRouter = require('./orderRouter'); // Добавлен роутер для заказов
-const basketRouter = require('./routes/basketController');
+const basketRouter = require('./basketRouter');
 
 router.use('/user', userRouter);
 router.use('/type', typeRouter);
