@@ -65,7 +65,7 @@ class UserController {
             return next(ApiError.badRequest('Пользователь не найден'));
         }
 
-        const hashPassword = await bcrypt.hash(newPassword, 5);
+        const hashPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashPassword;
         await user.save();
 
