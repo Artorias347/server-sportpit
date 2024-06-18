@@ -29,7 +29,27 @@ class DeviceController {
             next(ApiError.badRequest(e.message));
         }
     }
+    async delete(req, res, next) {
+        try {
+            const { id } = req.params;
 
+            const device = await Device.findOne({ where: { id } });
+
+            if (!device) {
+                return next(ApiError.notFound('Устройство не найдено'));
+            }
+
+            // Удаляем связанные с устройством информационные данные (DeviceInfo)
+            await DeviceInfo.destroy({ where: { deviceId: id } });
+
+            // Удаляем само устройство
+            await device.destroy();
+
+            return res.json({ message: 'Устройство успешно удалено' });
+        } catch (e) {
+            next(ApiError.badRequest(e.message));
+        }
+    }
     async getAll(req, res) {
         let { brandId, typeId, priceMin, priceMax, limit, page } = req.query;
         page = page || 1;
